@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Gerenciar Categorias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-900" x-data="{ sidebarOpen: true, showModal: false, editingCategory: null }">
+
+<header class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-40">
+    <div class="h-full px-4 flex items-center justify-between gap-4">
+        <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 hover:bg-slate-100 rounded-lg">
+            <i class="fas fa-bars text-slate-600"></i>
+        </button>
+
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                <i class="fas fa-book text-white text-sm"></i>
+            </div>
+            <span class="font-semibold text-lg">Dex Documentations</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="px-4 py-2 text-slate-600 hover:text-slate-900 text-sm font-medium">
+                <i class="fas fa-eye mr-2"></i>Ver Docs
+            </a>
+            <div class="flex items-center gap-3 pl-3 border-l border-slate-200">
+                <span class="text-sm text-slate-600 hidden sm:block">Admin</span>
+                <button class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center">
+                    <i class="fas fa-user text-slate-600 text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<aside
+    x-show="sidebarOpen"
+    x-transition
+    class="fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-slate-200 overflow-y-auto z-30"
+>
+    <nav class="p-4">
+        <a href="admin.html" class="flex items-center gap-3 p-3 text-slate-700 hover:bg-slate-50 rounded-lg mb-2">
+            <i class="fas fa-file-alt"></i>
+            <span>Documentos</span>
+        </a>
+        <a href="categories.html" class="flex items-center gap-3 p-3 bg-blue-50 text-blue-600 rounded-lg mb-2 font-medium">
+            <i class="fas fa-folder"></i>
+            <span>Categorias</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 p-3 text-slate-700 hover:bg-slate-50 rounded-lg mb-2">
+            <i class="fas fa-users"></i>
+            <span>Usuários</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 p-3 text-slate-700 hover:bg-slate-50 rounded-lg mb-2">
+            <i class="fas fa-chart-bar"></i>
+            <span>Estatísticas</span>
+        </a>
+        <a href="#" class="flex items-center gap-3 p-3 text-slate-700 hover:bg-slate-50 rounded-lg">
+            <i class="fas fa-cog"></i>
+            <span>Configurações</span>
+        </a>
+    </nav>
+</aside>
+
+<main
+    class="pt-16 transition-all duration-300"
+    :class="sidebarOpen ? 'lg:pl-64' : 'pl-0'"
+>
+    <div class="p-6 lg:p-8">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-900">Categorias</h1>
+                <p class="text-slate-600 mt-1">Organize a estrutura da documentação</p>
+            </div>
+            <button
+                @click="showModal = true; editingCategory = null"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            >
+                <i class="fas fa-plus mr-2"></i>Nova Categoria
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-rocket text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button
+                            @click="showModal = true; editingCategory = 'getting-started'"
+                            class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        >
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900 mb-2">Primeiros Passos</h3>
+                <p class="text-sm text-slate-600 mb-4">Guias iniciais para começar a usar o sistema</p>
+                <div class="flex items-center justify-between text-sm">
+                        <span class="text-slate-500">
+                            <i class="fas fa-file-alt mr-1"></i>
+                            3 documentos
+                        </span>
+                    <span class="text-slate-500">
+                            <i class="fas fa-layer-group mr-1"></i>
+                            0 subcategorias
+                        </span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cog text-slate-600 text-xl"></i>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button
+                            @click="showModal = true; editingCategory = 'config'"
+                            class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        >
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900 mb-2">Configuração</h3>
+                <p class="text-sm text-slate-600 mb-4">Como configurar diferentes aspectos do sistema</p>
+                <div class="flex items-center justify-between text-sm">
+                        <span class="text-slate-500">
+                            <i class="fas fa-file-alt mr-1"></i>
+                            5 documentos
+                        </span>
+                    <span class="text-slate-500">
+                            <i class="fas fa-layer-group mr-1"></i>
+                            2 subcategorias
+                        </span>
+                </div>
+
+                Subcategorias
+                <div class="mt-4 pt-4 border-t border-slate-200 space-y-2">
+                    <div class="flex items-center justify-between text-sm">
+                            <span class="text-slate-700">
+                                <i class="fas fa-folder text-slate-400 mr-2"></i>
+                                Banco de Dados
+                            </span>
+                        <span class="text-slate-500">2 docs</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                            <span class="text-slate-700">
+                                <i class="fas fa-folder text-slate-400 mr-2"></i>
+                                Cache
+                            </span>
+                        <span class="text-slate-500">1 doc</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-code text-slate-600 text-xl"></i>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button
+                            @click="showModal = true; editingCategory = 'api'"
+                            class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        >
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900 mb-2">API</h3>
+                <p class="text-sm text-slate-600 mb-4">Documentação completa da API REST</p>
+                <div class="flex items-center justify-between text-sm">
+                        <span class="text-slate-500">
+                            <i class="fas fa-file-alt mr-1"></i>
+                            8 documentos
+                        </span>
+                    <span class="text-slate-500">
+                            <i class="fas fa-layer-group mr-1"></i>
+                            0 subcategorias
+                        </span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-book-open text-slate-600 text-xl"></i>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button
+                            @click="showModal = true; editingCategory = 'guides'"
+                            class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        >
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-900 mb-2">Guias</h3>
+                <p class="text-sm text-slate-600 mb-4">Tutoriais e guias práticos avançados</p>
+                <div class="flex items-center justify-between text-sm">
+                        <span class="text-slate-500">
+                            <i class="fas fa-file-alt mr-1"></i>
+                            6 documentos
+                        </span>
+                    <span class="text-slate-500">
+                            <i class="fas fa-layer-group mr-1"></i>
+                            0 subcategorias
+                        </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div
+    x-show="showModal"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+    @click.self="showModal = false"
+>
+    <div
+        x-show="showModal"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-95"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-95"
+        class="bg-white rounded-lg shadow-xl max-w-lg w-full"
+    >
+        <div class="p-6 border-b border-slate-200 flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-slate-900" x-text="editingCategory ? 'Editar Categoria' : 'Nova Categoria'"></h2>
+            <button @click="showModal = false" class="p-2 hover:bg-slate-100 rounded-lg">
+                <i class="fas fa-times text-slate-600"></i>
+            </button>
+        </div>
+
+        <form class="p-6 space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Nome da Categoria</label>
+                <input
+                    type="text"
+                    placeholder="Ex: Primeiros Passos"
+                    class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Descrição</label>
+                <textarea
+                    rows="3"
+                    placeholder="Breve descrição da categoria"
+                    class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                ></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Ícone (Font Awesome)</label>
+                <input
+                    type="text"
+                    placeholder="Ex: fa-rocket"
+                    class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                <p class="text-xs text-slate-500 mt-2">
+                    <i class="fas fa-info-circle"></i>
+                    Visite <a href="https://fontawesome.com/icons" target="_blank" class="text-blue-600 hover:underline">fontawesome.com</a> para escolher um ícone
+                </p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Categoria Pai (opcional)</label>
+                <select class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option>Nenhuma (categoria principal)</option>
+                    <option>Primeiros Passos</option>
+                    <option>Configuração</option>
+                    <option>API</option>
+                    <option>Guias</option>
+                </select>
+                <p class="text-xs text-slate-500 mt-2">
+                    Selecione uma categoria pai para criar uma subcategoria
+                </p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Ordem de Exibição</label>
+                <input
+                    type="number"
+                    placeholder="0"
+                    class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                <p class="text-xs text-slate-500 mt-2">
+                    Número menor aparece primeiro na lista
+                </p>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+                <button
+                    type="button"
+                    @click="showModal = false"
+                    class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                    Cancelar
+                </button>
+                <button
+                    type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                >
+                    <i class="fas fa-save mr-2"></i>Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
