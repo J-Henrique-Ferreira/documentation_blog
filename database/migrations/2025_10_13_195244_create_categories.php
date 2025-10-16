@@ -12,15 +12,14 @@ return new class extends Migration {
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tenant_id');
+            $table->unsignedBigInteger('tenant_id')->nullable(false);
             $table->unsignedBigInteger('parent_id')->nullable(); // referência à própria tabela
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->integer('order')->default(0);
+            $table->string('name')->nullable(false);
+            $table->string('icon')->nullable();
             $table->timestamps();
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
-            $table->foreign('parent_id')->references('id')->on('documentation_sections')->onDelete('cascade');
+            $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_categories');
+        Schema::dropIfExists('categories');
     }
 };

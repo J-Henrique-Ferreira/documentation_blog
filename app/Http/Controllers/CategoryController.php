@@ -3,63 +3,89 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Traits\ReturnErrors;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {
+    use ReturnErrors;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('pages.categoria.index');
+        $categories = Category::all();
+        return view('pages.categoria.index', ['categories' => $categories]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return view(
+            'pages.categoria.create-update',
+            [
+                'method' => 'POST',
+                'route' => route('admin.categorias.store')
+            ]
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //
+        // dd($request->all());
+        try {
+            $category = new Category();
+
+            $category->fill($request->all());
+            $category->tenant_id = auth()->user()->tenant_id;
+            $category->save();
+
+            return redirect(route('admin.categorias.index'))->with('success', 'Categoria criada com sucesso!');
+            //code...
+        } catch (\Throwable $th) {
+
+            return $this->returnErrors($th, ['message' => 'Erro ao criar categoria!', 'route' => route('admin.categorias.index')]);
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
+    public function edit(Request $request)
     {
-        //
+        $category = Category::findOrFail($request->categoria);
+        return view(
+            'pages.categoria.create-update',
+            [
+                'method' => 'PUT',
+                'route' => route('admin.categorias.update', $category->id),
+                'category' => $category
+            ]
+        );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
+    public function update(UpdateCategoryRequest $request)
     {
-        //
+        $category = Category::findOrFail($request->categoria);
+
+        try {
+            $category->fill($request->all());
+            $category->save();
+
+            return redirect(route('admin.categorias.index'))->with('success', 'Categoria atualizada com sucesso!');
+        } catch (\Throwable $th) {
+            return $this->returnErrors($th, ['message' => 'Erro ao criar categoria!', 'route' => route('admin.categorias.edit', $category->id)]);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Category $category)
+    public function destroy(Request $request)
     {
-        //
-    }
+        $category = Category::findOrFail($request->categoria);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
-    {
-        //
+        try {
+            $category->delete();
+            return redirect(route('admin.categorias.index'))->with('success', 'Categoria removida com sucesso!');
+        } catch (\Throwable $th) {
+            return $this->returnErrors($th, ['message' => 'Erro ao remover categoria!', 'route' => route('admin.categorias.index', $category->id)]);
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Permission;
 use App\Models\Tenant;
 use App\Models\User;
@@ -41,6 +42,13 @@ class ValidaMultiTenant extends Controller
         $tenants = Tenant::all();
 
         return $this->generateTable($tenants->toArray());
+    }
+
+    public function getCategory()
+    {
+        $category = [];
+        $category = Category::all();
+        return $this->generateTable($category->toArray());
     }
 
     public function generateTable($dataTable)

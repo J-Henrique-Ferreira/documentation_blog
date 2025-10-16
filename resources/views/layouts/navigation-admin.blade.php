@@ -2,16 +2,16 @@
 $linksList = [
     [
         'name' => 'Documentos',
-        'href' => 'dashboard',
+        'href' => route('admin.documentos'),
         'icon' => 'fa  fa-file-text',
-        'route_pattern' => 'dashboard', // Captura todos os métodos
+        'route_pattern' => 'admin/documentos', // Captura todos os métodos
         'can' => null // Adicione a verificação de permissão se necessário
     ],
     [
         'name' => 'Categorias',
-        'href' => '/categorias',
+        'href' => route('admin.categorias.index'),
         'icon' => 'fa fa-folder-o w-4',
-        'route_pattern' => 'admin.categorias' // Captura todos os métodos
+        'route_pattern' => 'admin/categorias' // Captura todos os métodos
         // 'route_pattern' => '' // Para futuras rotas
     ],
     [
@@ -19,7 +19,6 @@ $linksList = [
         'href' => '#',
         'icon' => 'fa fa-users w-4',
         'route_pattern' => '/', // Captura todos os métodos
-        // 'route_pattern' => '' // Para futuras rotas
         'can' => 'admin_owner'
     ],
     [
@@ -27,7 +26,6 @@ $linksList = [
         'href' => '#',
         'icon' => 'fa fa-bar-chart w-4',
         'route_pattern' => '/' // Captura todos os métodos
-        // 'route_pattern' => '' // Para futuras rotas
     ],
 ];
 ?>
@@ -45,7 +43,7 @@ $linksList = [
 
             @foreach ($linksList as $link)
                 @php
-                    $isActive = request()->routeIs($link['route_pattern']);
+                    $isActive = request()->is($link['route_pattern'] . '*');
                 @endphp
 
                 @if(isset($link['can']))

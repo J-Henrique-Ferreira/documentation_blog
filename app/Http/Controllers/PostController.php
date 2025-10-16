@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return view('pages.post.index', compact('categories'));
     }
 
     /**
@@ -20,7 +22,13 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view(
+            'pages.post.create-update',
+            [
+                'method' => 'POST',
+                'action' => route('admin.posts.store')
+            ]
+        );
     }
 
     /**
@@ -44,15 +52,28 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $post = null;
+
+        return view(
+            'pages.post.create-update',
+            [
+                'method' => 'POST',
+                'action' => route('admin.posts.store'),
+                'post' => $post
+            ]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request)
     {
-        //
+        $post = null;
+
+        dd($post);
+
+        return redirect(route('admin.categorias.index'))->with('success', 'Categoria criada com sucesso!');
     }
 
     /**

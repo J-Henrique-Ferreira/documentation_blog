@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(PermissionsSeeder::class);
         $this->call(PermissionUserPivotSeeder::class);
+        $this->call(CategorySeeder::class);
     }
 }

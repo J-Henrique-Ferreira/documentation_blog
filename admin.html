@@ -10,7 +10,6 @@
 </head>
 <body class="bg-slate-50 text-slate-900" x-data="{ sidebarOpen: true, showModal: false, modalType: '' }">
 
-Header Admin
 <header class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-40">
     <div class="h-full px-4 flex items-center justify-between gap-4">
         <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 hover:bg-slate-100 rounded-lg">
@@ -69,186 +68,186 @@ Sidebar Admin
 </aside>
 
 Conteúdo Admin
-<main
-    class="pt-16 transition-all duration-300"
-    :class="sidebarOpen ? 'lg:pl-64' : 'pl-0'"
->
-    <div class="p-6 lg:p-8">
-        Header da página
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h1 class="text-3xl font-bold text-slate-900">Documentos</h1>
-                <p class="text-slate-600 mt-1">Gerencie toda a documentação do sistema</p>
-            </div>
-            <button
-                @click="showModal = true; modalType = 'create'"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-            >
-                <i class="fas fa-plus mr-2"></i>Novo Documento
-            </button>
-        </div>
-
-        Filtros e busca
-        <div class="bg-white rounded-lg border border-slate-200 p-4 mb-6">
-            <div class="flex flex-col sm:flex-row gap-4">
-                <div class="flex-1">
-                    <div class="relative">
-                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input
-                            type="text"
-                            placeholder="Buscar documentos..."
-                            class="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                    </div>
+    <main
+        class="pt-16 transition-all duration-300"
+        :class="sidebarOpen ? 'lg:pl-64' : 'pl-0'"
+    >
+        <div class="p-6 lg:p-8">
+            Header da página
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-slate-900">Documentos</h1>
+                    <p class="text-slate-600 mt-1">Gerencie toda a documentação do sistema</p>
                 </div>
-                <select class="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Todas as categorias</option>
-                    <option>Primeiros Passos</option>
-                    <option>Configuração</option>
-                    <option>API</option>
-                    <option>Guias</option>
-                </select>
-                <select class="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Todos os status</option>
-                    <option>Publicado</option>
-                    <option>Rascunho</option>
-                </select>
-            </div>
-        </div>
-
-        Tabela de documentos
-        <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
-            <table class="w-full">
-                <thead class="bg-slate-50 border-b border-slate-200">
-                <tr>
-                    <th class="text-left p-4 font-semibold text-sm text-slate-700">Título</th>
-                    <th class="text-left p-4 font-semibold text-sm text-slate-700 hidden md:table-cell">Categoria</th>
-                    <th class="text-left p-4 font-semibold text-sm text-slate-700 hidden lg:table-cell">Atualizado</th>
-                    <th class="text-left p-4 font-semibold text-sm text-slate-700 hidden sm:table-cell">Status</th>
-                    <th class="text-right p-4 font-semibold text-sm text-slate-700">Ações</th>
-                </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-200">
-                <tr class="hover:bg-slate-50">
-                    <td class="p-4">
-                        <div class="font-medium text-slate-900">Instalação do Sistema</div>
-                        <div class="text-sm text-slate-500 mt-1">Como instalar e configurar...</div>
-                    </td>
-                    <td class="p-4 hidden md:table-cell">
-                                <span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
-                                    <i class="fas fa-rocket"></i>
-                                    Primeiros Passos
-                                </span>
-                    </td>
-                    <td class="p-4 text-sm text-slate-600 hidden lg:table-cell">Há 2 dias</td>
-                    <td class="p-4 hidden sm:table-cell">
-                                <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
-                                    <i class="fas fa-check-circle"></i>
-                                    Publicado
-                                </span>
-                    </td>
-                    <td class="p-4">
-                        <div class="flex items-center justify-end gap-2">
-                            <button
-                                @click="showModal = true; modalType = 'edit'"
-                                class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                                title="Editar"
-                            >
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors" title="Excluir">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr class="hover:bg-slate-50">
-                    <td class="p-4">
-                        <div class="font-medium text-slate-900">Configuração do Banco de Dados</div>
-                        <div class="text-sm text-slate-500 mt-1">Aprenda a configurar MySQL e PostgreSQL...</div>
-                    </td>
-                    <td class="p-4 hidden md:table-cell">
-                                <span class="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs font-medium">
-                                    <i class="fas fa-cog"></i>
-                                    Configuração
-                                </span>
-                    </td>
-                    <td class="p-4 text-sm text-slate-600 hidden lg:table-cell">Há 5 dias</td>
-                    <td class="p-4 hidden sm:table-cell">
-                                <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
-                                    <i class="fas fa-check-circle"></i>
-                                    Publicado
-                                </span>
-                    </td>
-                    <td class="p-4">
-                        <div class="flex items-center justify-end gap-2">
-                            <button
-                                @click="showModal = true; modalType = 'edit'"
-                                class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                            >
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr class="hover:bg-slate-50">
-                    <td class="p-4">
-                        <div class="font-medium text-slate-900">API de Autenticação</div>
-                        <div class="text-sm text-slate-500 mt-1">Endpoints e exemplos de uso...</div>
-                    </td>
-                    <td class="p-4 hidden md:table-cell">
-                                <span class="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs font-medium">
-                                    <i class="fas fa-code"></i>
-                                    API
-                                </span>
-                    </td>
-                    <td class="p-4 text-sm text-slate-600 hidden lg:table-cell">Há 1 semana</td>
-                    <td class="p-4 hidden sm:table-cell">
-                                <span class="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-medium">
-                                    <i class="fas fa-clock"></i>
-                                    Rascunho
-                                </span>
-                    </td>
-                    <td class="p-4">
-                        <div class="flex items-center justify-end gap-2">
-                            <button
-                                @click="showModal = true; modalType = 'edit'"
-                                class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                            >
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        Paginação
-        <div class="flex items-center justify-between mt-6">
-            <p class="text-sm text-slate-600">Mostrando 1-3 de 24 documentos</p>
-            <div class="flex items-center gap-2">
-                <button class="px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-50" disabled>
-                    Anterior
-                </button>
-                <button class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">1</button>
-                <button class="px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50">2</button>
-                <button class="px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50">3</button>
-                <button class="px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50">
-                    Próximo
+                <button
+                    @click="showModal = true; modalType = 'create'"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                >
+                    <i class="fas fa-plus mr-2"></i>Novo Documento
                 </button>
             </div>
+
+            Filtros e busca
+            <div class="bg-white rounded-lg border border-slate-200 p-4 mb-6">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input
+                                type="text"
+                                placeholder="Buscar documentos..."
+                                class="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                        </div>
+                    </div>
+                    <select class="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>Todas as categorias</option>
+                        <option>Primeiros Passos</option>
+                        <option>Configuração</option>
+                        <option>API</option>
+                        <option>Guias</option>
+                    </select>
+                    <select class="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>Todos os status</option>
+                        <option>Publicado</option>
+                        <option>Rascunho</option>
+                    </select>
+                </div>
+            </div>
+
+            Tabela de documentos
+            <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-slate-50 border-b border-slate-200">
+                    <tr>
+                        <th class="text-left p-4 font-semibold text-sm text-slate-700">Título</th>
+                        <th class="text-left p-4 font-semibold text-sm text-slate-700 hidden md:table-cell">Categoria</th>
+                        <th class="text-left p-4 font-semibold text-sm text-slate-700 hidden lg:table-cell">Atualizado</th>
+                        <th class="text-left p-4 font-semibold text-sm text-slate-700 hidden sm:table-cell">Status</th>
+                        <th class="text-right p-4 font-semibold text-sm text-slate-700">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-4">
+                            <div class="font-medium text-slate-900">Instalação do Sistema</div>
+                            <div class="text-sm text-slate-500 mt-1">Como instalar e configurar...</div>
+                        </td>
+                        <td class="p-4 hidden md:table-cell">
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+                                        <i class="fas fa-rocket"></i>
+                                        Primeiros Passos
+                                    </span>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 hidden lg:table-cell">Há 2 dias</td>
+                        <td class="p-4 hidden sm:table-cell">
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
+                                        <i class="fas fa-check-circle"></i>
+                                        Publicado
+                                    </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex items-center justify-end gap-2">
+                                <button
+                                    @click="showModal = true; modalType = 'edit'"
+                                    class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                                    title="Editar"
+                                >
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors" title="Excluir">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-4">
+                            <div class="font-medium text-slate-900">Configuração do Banco de Dados</div>
+                            <div class="text-sm text-slate-500 mt-1">Aprenda a configurar MySQL e PostgreSQL...</div>
+                        </td>
+                        <td class="p-4 hidden md:table-cell">
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs font-medium">
+                                        <i class="fas fa-cog"></i>
+                                        Configuração
+                                    </span>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 hidden lg:table-cell">Há 5 dias</td>
+                        <td class="p-4 hidden sm:table-cell">
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
+                                        <i class="fas fa-check-circle"></i>
+                                        Publicado
+                                    </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex items-center justify-end gap-2">
+                                <button
+                                    @click="showModal = true; modalType = 'edit'"
+                                    class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                                >
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-4">
+                            <div class="font-medium text-slate-900">API de Autenticação</div>
+                            <div class="text-sm text-slate-500 mt-1">Endpoints e exemplos de uso...</div>
+                        </td>
+                        <td class="p-4 hidden md:table-cell">
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs font-medium">
+                                        <i class="fas fa-code"></i>
+                                        API
+                                    </span>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600 hidden lg:table-cell">Há 1 semana</td>
+                        <td class="p-4 hidden sm:table-cell">
+                                    <span class="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-700 rounded text-xs font-medium">
+                                        <i class="fas fa-clock"></i>
+                                        Rascunho
+                                    </span>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex items-center justify-end gap-2">
+                                <button
+                                    @click="showModal = true; modalType = 'edit'"
+                                    class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                                >
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            Paginação
+            <div class="flex items-center justify-between mt-6">
+                <p class="text-sm text-slate-600">Mostrando 1-3 de 24 documentos</p>
+                <div class="flex items-center gap-2">
+                    <button class="px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-50" disabled>
+                        Anterior
+                    </button>
+                    <button class="px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium">1</button>
+                    <button class="px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50">2</button>
+                    <button class="px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50">3</button>
+                    <button class="px-3 py-2 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50">
+                        Próximo
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 
 Modal Criar/Editar Documento
 <div
