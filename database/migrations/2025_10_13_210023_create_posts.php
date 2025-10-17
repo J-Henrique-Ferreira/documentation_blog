@@ -12,10 +12,18 @@ return new class extends Migration {
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            // title
-            // descriptions (optional)
-            // content
+            $table->string('title');
+            $table->string('description');
+            $table->text('content');
+            $table->unsignedBigInteger('tenant_id')->nullable(false);
+            $table->unsignedBigInteger('author_id')->nullable(false);
+            $table->unsignedBigInteger('category_id')->nullable(false);
+
             $table->timestamps();
+
+            $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
+            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
@@ -24,6 +32,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_posts');
+        Schema::dropIfExists('posts');
     }
 };

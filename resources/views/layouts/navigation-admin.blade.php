@@ -2,7 +2,7 @@
 $linksList = [
     [
         'name' => 'Documentos',
-        'href' => route('admin.documentos'),
+        'href' => route('admin.documentos.index'),
         'icon' => 'fa  fa-file-text',
         'route_pattern' => 'admin/documentos', // Captura todos os métodos
         'can' => null // Adicione a verificação de permissão se necessário

@@ -17,11 +17,6 @@ Route::middleware(['auth', 'verified', VerifyUserTenant::class])->group(function
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::prefix('admin')->name('admin.')->group(function () {
-
-        Route::get('/documentos', function () {
-            return view('pages.post.index');
-        })->name('documentos');
-
         Route::resource('categorias', CategoryController::class)
             ->only(
                 ['index', 'create', 'store', 'edit', 'update', 'destroy']
@@ -36,17 +31,17 @@ Route::middleware(['auth', 'verified', VerifyUserTenant::class])->group(function
                 ]
             );
 
-        Route::resource('posts', PostController::class)
+        Route::resource('documentos', PostController::class)
             ->only(
                 ['index', 'create', 'store', 'edit', 'update', 'destroy']
             )->names(
                 [
-                    'index' => 'posts.index',
-                    'store' => 'posts.store',
-                    'create' => 'posts.create',
-                    'edit' => 'posts.edit',
-                    'update' => 'posts.update',
-                    'destroy' => 'posts.destroy',
+                    'index' => 'documentos.index',
+                    'store' => 'documentos.store',
+                    'create' => 'documentos.create',
+                    'edit' => 'documentos.edit',
+                    'update' => 'documentos.update',
+                    'destroy' => 'documentos.destroy',
                 ]
             );
     });
@@ -57,4 +52,6 @@ Route::get('get-users', [ValidaMultiTenant::class, 'getAllUsers'])->name('get.us
 Route::get('get-permissions', [ValidaMultiTenant::class, 'getAllPermissions'])->name('get.permissions');
 Route::get('get-tenants', [ValidaMultiTenant::class, 'getAllTenants'])->name('get.tensnts');
 Route::get('get-category', [ValidaMultiTenant::class, 'getCategory']);
+Route::get('get-posts', [ValidaMultiTenant::class, 'getPosts']);
+
 require __DIR__ . '/auth.php';

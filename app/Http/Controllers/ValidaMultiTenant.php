@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Permission;
+use App\Models\Post;
 use App\Models\Tenant;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class ValidaMultiTenant extends Controller
 {
@@ -50,6 +50,14 @@ class ValidaMultiTenant extends Controller
         $category = Category::all();
         return $this->generateTable($category->toArray());
     }
+
+    public function getPosts()
+    {
+        $posts = [];
+        $posts = Post::all();
+        return $this->generateTable($posts->toArray());
+    }
+
 
     public function generateTable($dataTable)
     {

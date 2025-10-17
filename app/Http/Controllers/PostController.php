@@ -13,8 +13,22 @@ class PostController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('pages.post.index', compact('categories'));
+        try {
+            $tenantId = auth()->user()->tenant_id;
+
+            $categoriesList = Category::where('tenant_id', $tenantId)->get();
+            $postsList = Post::where('tenant_id', $tenantId)->with('category', 'author')->paginate(10);
+
+            return view(
+                'pages.post.index',
+                compact(
+                    'categoriesList',
+                    'postsList'
+                )
+            );
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -22,13 +36,17 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view(
-            'pages.post.create-update',
-            [
-                'method' => 'POST',
-                'action' => route('admin.posts.store')
-            ]
-        );
+        try {
+            return view(
+                'pages.post.create-update',
+                [
+                    'method' => 'POST',
+                    'action' => route('admin.documentos.store')
+                ]
+            );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -58,7 +76,7 @@ class PostController extends Controller
             'pages.post.create-update',
             [
                 'method' => 'POST',
-                'action' => route('admin.posts.store'),
+                'action' => route('admin.documentos.store'),
                 'post' => $post
             ]
         );

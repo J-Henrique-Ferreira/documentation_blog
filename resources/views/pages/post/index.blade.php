@@ -10,7 +10,7 @@
                     <h1 class="text-3xl font-bold text-slate-900">Documentos</h1>
                     <p class="text-slate-600 mt-1">Gerencie toda a documentação do sistema</p>
                 </div>
-                <a href="{{ route('admin.posts.create') }}"
+                <a href="{{ route('admin.documentos.create') }}"
                     class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
                     <i class="fa fa-plus mr-2"></i>
                     Novo Documento
