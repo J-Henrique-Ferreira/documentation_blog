@@ -36,11 +36,12 @@
 
     <td class="p-4">
         <div class="flex items-center justify-end gap-2">
-            <button @click="showModal = true; modalType = 'edit'"
+            <a 
+                href="{{ route('admin.documentos.edit', $post->id) }}"
                 class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
                 title="Editar">
                 <i class="fa fa-edit"></i>
-            </button>
+            </a>
             <button class="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                 title="Excluir">
                 <i class="fa fa-trash"></i>

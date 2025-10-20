@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Traits\ReturnErrors;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 
 class PostController extends Controller
 {
@@ -90,16 +91,22 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(Request $request)
     {
-        $post = null;
+        $tenantId = auth()->user()->tenant_id;
+        $post = Post::findOrFail($request->documento);
+        $categoriesList = Category::where('tenant_id', $tenantId)->get();
+
+        // dd($post);
 
         return view(
             'pages.post.create-update',
             [
-                'method' => 'POST',
-                'action' => route('admin.documentos.store'),
-                'post' => $post
+                'method' => 'PUT',
+                'action' => route('admin.documentos.update', $post->id),
+                'post' => $post,
+                'categoriesList' => $categoriesList
+
             ]
         );
     }
@@ -107,7 +114,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(UpdatePostRequest $request)
     {
         $post = null;
 
