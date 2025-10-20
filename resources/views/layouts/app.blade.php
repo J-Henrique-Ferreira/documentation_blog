@@ -36,7 +36,7 @@
                     <div class="flex items-center gap-3">
                         <div
                             class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-book text-white text-sm"></i>
+                            <i class="fa fa-book text-white text-sm"></i>
                         </div>
                         <span class="font-semibold text-lg hidden sm:block">Dex Documentations</span>
                     </div>

@@ -27,7 +27,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.documentos', absolute: false));
+        return redirect()->intended(route('admin.documentos.index', absolute: false));
     }
 
     /**

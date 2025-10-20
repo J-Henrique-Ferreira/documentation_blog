@@ -1,19 +1,17 @@
 Tasks
-[] Cria estrutura de categorias
-[] Criar rotas para categorias
-[] Criar controller para categorias
-[] Criar views para categorias
-[] Criar formulário para categorias
-[] Criar validação para categorias
-[] Criar regras de negócio para categorias
-[] Criar testes para categorias
 
 
-[] Cria estrutura para posts
-[] Criar rotas para posts
-[] Criar controller para posts
-[] Criar views para posts
-[] Criar formulário para posts
-[] Criar validação para posts
-[] Criar regras de negócio para posts
-[] Criar testes para posts
+# CATEGORIAS
+[x] Migrations
+[x] Rotas
+[x] Controller
+[x] Views (CRUD)
+[x] Request validators
+
+
+# POSTS
+[] Migrations
+[] Rotas
+[] Controller
+[] Views (CRUD)
+[] Request validators

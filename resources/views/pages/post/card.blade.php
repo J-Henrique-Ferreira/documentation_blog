@@ -1,21 +1,39 @@
 <tr class="hover:bg-slate-50">
     <td class="p-4">
-        <div class="font-medium text-slate-900">Instalação do Sistema</div>
-        <div class="text-sm text-slate-500 mt-1">Como instalar e configurar...</div>
+        <div class="font-medium text-slate-900">
+            {{ $post->title }}
+        </div>
+        <div class="text-sm text-slate-500 mt-1">
+            {{ $post->description }}
+        </div>
     </td>
     <td class="p-4 hidden md:table-cell">
         <span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
-            <i class="fa fa-rocket"></i>
-            Primeiros Passos
+            <i class="{{ $post->category->icon }}"></i>
+            {{ $post->category->name }}
         </span>
     </td>
-    <td class="p-4 text-sm text-slate-600 hidden lg:table-cell">Há 2 dias</td>
+    <td class="p-4 text-sm text-slate-600 hidden lg:table-cell">
+    {{ $post->updated_at }}
+    </td>
     <td class="p-4 hidden sm:table-cell">
-        <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
+
+        @if($post->status === 'publish')
+            <span class="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
+                <i class="fa fa-check-circle"></i>
+                publicado
+            </span>
+        @endif
+
+
+        @if($post->status === 'draft')
+            <span class="inline-flex items-center gap-1 px-2 py-1 bg-yellow-200 text-yellow-700 rounded text-xs font-medium">
             <i class="fa fa-check-circle"></i>
-            Publicado
-        </span>
+            rascunho
+            </span>
+        @endif
     </td>
+
     <td class="p-4">
         <div class="flex items-center justify-end gap-2">
             <button @click="showModal = true; modalType = 'edit'"
@@ -31,7 +49,7 @@
     </td>
 </tr>
 
-<tr class="hover:bg-slate-50">
+<!--<tr class="hover:bg-slate-50">
     <td class="p-4">
         <div class="font-medium text-slate-900">Configuração do Banco de Dados</div>
         <div class="text-sm text-slate-500 mt-1">Aprenda a configurar MySQL e PostgreSQL...
@@ -92,4 +110,4 @@
             </button>
         </div>
     </td>
-</tr>
+</tr>-->

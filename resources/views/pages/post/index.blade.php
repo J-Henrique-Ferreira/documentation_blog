@@ -29,17 +29,18 @@
                     <select
                         class="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option>Todas as categorias</option>
-                        <option>Primeiros Passos</option>
-                        <option>Configuração</option>
-                        <option>API</option>
-                        <option>Guias</option>
+
+                        @foreach ($categoriesList as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+
                     </select>
-                    <select
+                    <!-- <select
                         class="px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option>Todos os status</option>
                         <option>Publicado</option>
                         <option>Rascunho</option>
-                    </select>
+                    </select> -->
                 </div>
             </div>
 
@@ -62,7 +63,10 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200">
-                        @include('pages.post.card')
+
+                        @foreach ($postsList as $post )
+                            @include('pages.post.card')
+                        @endforeach
                     </tbody>
                 </table>
             </div>

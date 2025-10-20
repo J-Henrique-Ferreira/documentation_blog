@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('description');
             $table->text('content');
+            $table->string('status')->default('publish'); // publish ou draft
             $table->unsignedBigInteger('tenant_id')->nullable(false);
             $table->unsignedBigInteger('author_id')->nullable(false);
             $table->unsignedBigInteger('category_id')->nullable(false);

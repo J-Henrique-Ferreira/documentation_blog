@@ -44,7 +44,6 @@ class CategoryController extends Controller
             return redirect(route('admin.categorias.index'))->with('success', 'Categoria criada com sucesso!');
             //code...
         } catch (\Throwable $th) {
-
             return $this->returnErrors($th, ['message' => 'Erro ao criar categoria!', 'route' => route('admin.categorias.index')]);
         }
 
