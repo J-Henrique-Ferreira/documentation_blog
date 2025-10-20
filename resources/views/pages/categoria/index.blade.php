@@ -1,4 +1,6 @@
 <x-app-layout>
+    @include('layouts.navigation-admin')
+
     <x-slot name="header" class="relative"></x-slot>
 
     <div class="w-full">

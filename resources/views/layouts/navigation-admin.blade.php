@@ -30,13 +30,13 @@ $linksList = [
 ];
 ?>
 
-<div x-data="{ sidebarOpen: true }" class="flex h-screen border-r border-gray-200 fixed z-10">
+<div class="flex h-screen border-r border-gray-200 fixed z-10">
     <!-- Sidebar -->
     <div :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-30 w-64 transform bg-white border-opacity-30
         transition duration-300 ease-in-out md:relative md:translate-x-0 uppercase">
 
         <!-- Navigation -->
-        <nav class="p-4 space-y-2 mt-20">
+        <nav class="p-4 space-y-2 mt-3">
             <p class="px-4 pt-4 text-sm font-semibold text-gray-600 uppercase tracking-wider hidden">
                 Menu Principal
             </p>
@@ -65,10 +65,10 @@ $linksList = [
 
         </nav>
 
-        <div class="w-full p-4 pb-7 border-opacity-30 absolute bottom-0">
+        <div class="w-full p-4 pb-7 border-opacity-30 absolute bottom-10">
 
             <!-- Settings link -->
-            <a href="{{ route('profile.edit') }}"
+            <a href=" {{ route('profile.edit') }}"
                 class="flex items-center px-4 py-2.5 rounded-lg hover:bg-[#e3f1ff71] text-black transition-all duration-300 {{ request()->routeIs('profile.*') ? 'bg-black text-white hover:text-black' : '' }}">
                 <i class="fa fa-cog"></i>
 

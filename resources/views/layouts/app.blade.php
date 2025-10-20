@@ -19,18 +19,13 @@
 
 <body class="font-sans antialiased bg-[#f9fafb]">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-        @include('layouts.navigation-admin')
 
         <!-- Page Heading -->
         @isset($header)
-            <header
-                class="flex justify-between bg-white border-b border-gray-200 py-2 pr-4 fixed top-0 w-full z-20">
-                <div
-                    class="w-full h-full px-4 flex items-center justify-between gap-4">
-                    <button
-                        @click="sidebarOpen = !sidebarOpen"
-                        class="lg:hidden p-2 hover:bg-slate-100 rounded-lg">
-                            <i class="fas fa-bars text-slate-600"></i>
+            <header class="flex justify-between bg-white border-b border-gray-200 py-2 pr-4 fixed top-0 w-full z-20">
+                <div class="w-full h-full px-4 flex items-center justify-between gap-4">
+                    <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 hover:bg-slate-100 rounded-lg">
+                        <i class="fas fa-bars text-slate-600"></i>
                     </button>
 
                     <div class="flex items-center gap-3">
@@ -47,7 +42,7 @@
                                 class="w-full pl-10 pr-4 py-2 bg-slate-100 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
                                 x-on:focus="searchOpen = true" x-on:blur="setTimeout(() => searchOpen = false, 200)">
 
-                            <!--                Resultados da pesquisa-->
+
                             <div x-show="searchOpen" x-transition
                                 class="absolute top-full mt-2 left-0 right-0 bg-white rounded-lg shadow-xl border border-slate-200 max-h-96 overflow-y-auto hidden">
                                 <div class="p-2">
@@ -84,11 +79,11 @@
                     </div>
                 </div>
             </header>
-            <div class="h-20"></div>
+            <div class="h-[58px]"></div>
         @endisset
 
         <!-- Page Content -->
-        <main class="flex w-full px-2">
+        <main class=" flex w-full relative">
             <div class="w-[300px] opacity-0">espaço horizontal para preencher logo a baixo do menu lateral</div>
             {{ $slot }}
         </main>

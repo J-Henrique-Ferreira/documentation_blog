@@ -1,132 +1,139 @@
-<?php
-$linksList = [
-    [
-        'name' => 'Painel De Controle',
-        'href' => 'dashboard',
-        'icon' => 'fa fa-bar-chart',
-        // 'route_pattern' => '/' // Adicione o padrão da rota
-        'route_pattern' => 'dashboard', // Captura todos os métodos
-        'can' => null // Adicione a verificação de permissão se necessário
-    ],
-    [
-        'name' => 'Link de Exemplo',
-        'href' => '#',
-        'icon' => 'fa fa-cubes w-4',
-        'route_pattern' => '/' // Captura todos os métodos
-        // 'route_pattern' => '' // Para futuras rotas
-    ],
-    [
-        'name' => 'Link de Exemplo',
-        'href' => '#',
-        'icon' => 'fa fa-cubes w-4',
-        'route_pattern' => '/' // Captura todos os métodos
-        // 'route_pattern' => '' // Para futuras rotas
-    ],
-    [
-        'name' => 'Link de Exemplo',
-        'href' => '#',
-        'icon' => 'fa fa-cubes w-4',
-        'route_pattern' => '/' // Captura todos os métodos
-        // 'route_pattern' => '' // Para futuras rotas
-    ],
-    [
-        'name' => 'Link de Exemplo',
-        'href' => '#',
-        'icon' => 'fa fa-cubes w-4',
-        'route_pattern' => '/' // Captura todos os métodos
-        // 'route_pattern' => '' // Para futuras rotas
-    ],
-    [
-        'name' => 'Link de Exemplo',
-        'href' => '#',
-        'icon' => 'fa fa-cubes w-4',
-        'route_pattern' => '/' // Captura todos os métodos
-        // 'route_pattern' => '' // Para futuras rotas
-    ],
-    [
-        'name' => 'Link de Exemplo',
-        'href' => '#',
-        'icon' => 'fa fa-cubes w-4',
-        'route_pattern' => '/' // Captura todos os métodos
-        // 'route_pattern' => '' // Para futuras rotas
-    ],
-    [
-        'name' => 'Usuários',
-        'href' => '#',
-        'icon' => 'fa fa-users w-4',
-        'route_pattern' => '/', // Captura todos os métodos
-        // 'route_pattern' => '' // Para futuras rotas
-        'can' => 'admin_owner'
-    ],
-];
-?>
+<aside x-transition:enter="transition ease-out duration-300" x-transition:enter-start="-translate-x-full"
+    x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-300"
+    x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full"
+    class="fixed left-0 top-[59px] bottom-0 w-72 bg-white border-r border-slate-200 overflow-y-auto z-30" x-data="{
+            openCategories: ['getting-started', 'config'],
+            toggleCategory(id) {
+                if (this.openCategories.includes(id)) {
+                    this.openCategories = this.openCategories.filter(cat => cat !== id)
+                } else {
+                    this.openCategories.push(id)
+                }
+            }
+        }">
+    <nav class="p-4">
+        <div class="mb-2">
+            <button @click="toggleCategory('getting-started')"
+                class="w-full flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg text-left font-medium">
+                <span class="flex items-center gap-2">
+                    <i class="fa fa-rocket text-blue-600 text-sm"></i>
+                    Primeiros Passos
+                </span>
+                <i class="fa fa-chevron-down text-xs transition-transform"
+                    :class="openCategories.includes('getting-started') ? 'rotate-180' : ''"></i>
+            </button>
 
-<div x-data="{ sidebarOpen: true }" class="flex h-screen border-r border-gray-200 fixed z-10">
-    <!-- Sidebar -->
-    <div :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-30 w-64 transform
-        bg-white border-opacity-30 transition duration-300 ease-in-out md:relative md:translate-x-0 uppercase">
-
-        <!-- Navigation -->
-        <nav class="p-4 space-y-2 mt-20">
-            <p class="px-4 pt-4 text-sm font-semibold text-gray-600 uppercase tracking-wider hidden">
-                Menu Principal
-            </p>
-
-            @foreach ($linksList as $link)
-                @php
-                    $isActive = request()->routeIs($link['route_pattern']);
-                @endphp
-
-                @if(isset($link['can']))
-                    @can($link['can'])
-                        <a href="{{ $link['href'] }}"
-                            class="flex items-center px-4 py-2.5 rounded-lg transition-all duration-300 hover:bg-[#ebeef1c0]
-                            text- {{ $isActive ? 'bg-black text-white hover:text-black' : '' }}">
-                            <i class="{{ $link['icon'] }}" aria-hidden="true"></i>
-                            <span class="ml-3 text-sm">{{ $link['name'] }}</span>
-                        </a>
-                    @endcan
-                @else
-                    <a href="{{ $link['href'] }}"
-                        class="flex items-center px-4 py-2.5 rounded-lg transition-all duration-300 hover:bg-[#ebeef1c0]
-                         text- {{ $isActive ? 'bg-black text-white hover:text-black' : '' }}">
-                        <i class="{{ $link['icon'] }}" aria-hidden="true"></i>
-                        <span class="ml-3 text-sm">{{ $link['name'] }}</span>
-                    </a>
-                @endif
-            @endforeach
-
-
-            <!-- Users link -->
-            <p class="px-4 pt-8 text-sm font-semibold text-gray-600 uppercase tracking-wider hidden">
-                Configurações
-            </p>
-
-            <br>
-            <br>
-
-        </nav>
-
-        <div class="w-full p-4 pb-7 border-opacity-30 absolute bottom-0">
-
-            <!-- Settings link -->
-            <a href="{{ route('profile.edit') }}"
-                class="flex items-center px-4 py-2.5 rounded-lg hover:bg-[#ebeef1c0] text-black transition-all
-                duration-300 {{ request()->routeIs('profile.*') ? 'bg-black text-white hover:text-black' : '' }}">
-                <i class="fa fa-cog"></i>
-
-                <span class="ml-3 text-sm">Configurações</span>
-            </a>
-
-            <!-- Logout -->
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="w-full flex items-center px-4 py-2.5
-                rounded-lg hover:bg-[#ebeef1c0]  text-black hover:text-red-500 transition-all duration-300 uppercase">
-                    <i class="fa fa-sign-out" aria-hidden="true"></i>
-                    <span class="ml-3 text-sm">Sair</span>
-                </button>
-            </form>
+            <div x-show="openCategories.includes('getting-started')" x-collapse class="ml-4 mt-1 space-y-1">
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
+                    Introdução
+                </a>
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg bg-blue-50 text-blue-600 border-l-2 border-blue-600">
+                    Instalação
+                </a>
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
+                    Configuração Inicial
+                </a>
+            </div>
         </div>
-    </div>
-</div>
+
+        <div class="mb-2">
+            <button @click="toggleCategory('config')"
+                class="w-full flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg text-left font-medium">
+                <span class="flex items-center gap-2">
+                    <i class="fa fa-cog text-slate-600 text-sm"></i>
+                    Configuração
+                </span>
+                <i class="fa fa-chevron-down text-xs transition-transform"
+                    :class="openCategories.includes('config') ? 'rotate-180' : ''"></i>
+            </button>
+
+            <div x-show="openCategories.includes('config')" x-collapse class="ml-4 mt-1">
+                Subcategoria
+                <div x-data="{ openSub: false }">
+                    <button @click="openSub = !openSub"
+                        class="w-full flex items-center justify-between p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-left text-slate-700">
+                        <span>Banco de Dados</span>
+                        <i class="fa fa-chevron-down text-xs transition-transform"
+                            :class="openSub ? 'rotate-180' : ''"></i>
+                    </button>
+                    <div x-show="openSub" x-collapse class="ml-4 mt-1 space-y-1">
+                        <a href="#"
+                            class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-600 hover:text-blue-600">
+                            MySQL
+                        </a>
+                        <a href="#"
+                            class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-600 hover:text-blue-600">
+                            PostgreSQL
+                        </a>
+                    </div>
+                </div>
+
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
+                    Variáveis de Ambiente
+                </a>
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
+                    Cache
+                </a>
+            </div>
+        </div>
+
+        <div class="mb-2">
+            <button @click="toggleCategory('api')"
+                class="w-full flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg text-left font-medium">
+                <span class="flex items-center gap-2">
+                    <i class="fa fa-code text-slate-600 text-sm"></i>
+                    API
+                </span>
+                <i class="fa fa-chevron-down text-xs transition-transform"
+                    :class="openCategories.includes('api') ? 'rotate-180' : ''"></i>
+            </button>
+
+            <div x-show="openCategories.includes('api')" x-collapse class="ml-4 mt-1 space-y-1">
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
+                    Autenticação
+                </a>
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
+                    Endpoints
+                </a>
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
+                    Rate Limiting
+                </a>
+            </div>
+        </div>
+
+        <div class="mb-2">
+            <button @click="toggleCategory('guides')"
+                class="w-full flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg text-left font-medium">
+                <span class="flex items-center gap-2">
+                    <i class="fa fa-book-open text-slate-600 text-sm"></i>
+                    Guias
+                </span>
+                <i class="fa fa-chevron-down text-xs transition-transform"
+                    :class="openCategories.includes('guides') ? 'rotate-180' : ''"></i>
+            </button>
+
+            <div x-show="openCategories.includes('guides')" x-collapse class="ml-4 mt-1 space-y-1">
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
+                    Deploy em Produção
+                </a>
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
+                    Segurança
+                </a>
+                <a href="#"
+                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
+                    Performance
+                </a>
+            </div>
+        </div>
+    </nav>
+</aside>

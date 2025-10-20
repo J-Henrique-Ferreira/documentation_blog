@@ -20,9 +20,9 @@ class PostController extends Controller
     {
         try {
             $tenantId = auth()->user()->tenant_id;
-
             $categoriesList = Category::where('tenant_id', $tenantId)->get();
-            $postsList = Post::where('tenant_id', $tenantId)->with('category', 'author')->paginate(10);
+            $postsList = Post::where('tenant_id', $tenantId)->with('category', 'author')->paginate(12);
+            // dd($postsList);
 
             return view(
                 'pages.post.index',
@@ -85,7 +85,19 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+
+    }
+
+    public function showAll(Request $request)
+    {
+        $tenantId = auth()->user()->tenant_id;
+        $categoriesList = Category::where('tenant_id', $tenantId)->get();
+        $postsList = Post::where('tenant_id', $tenantId)->with('category', 'author')->paginate(12);
+
+        return view('pages.post.show-all', [
+            'categoriesList' => $categoriesList,
+            'postsList' => $postsList
+        ]);
     }
 
     /**
@@ -114,20 +126,38 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request)
+    public function update(UpdatePostRequest $request, string $documento)
     {
-        $post = null;
+        $post = Post::findOrFail($documento);
 
-        dd($post);
+        try {
+            $post->update($request->all());
+            $post->save();
 
-        return redirect(route('admin.categorias.index'))->with('success', 'Categoria criada com sucesso!');
+            return redirect(route('admin.documentos.index'))->with('success', 'Documento alterado com sucesso!');
+
+        } catch (\Throwable $th) {
+            return $this->returnErrors($th, [
+                'message' => 'Erro ao editar documento.',
+                'route' => route('admin.documentos.edit', $documento)
+            ]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            $post = Post::find($request->documento);
+            $post->delete();
+            return redirect(route('admin.documentos.index'))->with('success', 'Documento removido com sucesso!');
+        } catch (\Throwable $th) {
+            return $this->returnErrors($th, [
+                'message' => 'Erro ao remover documento.',
+                'route' => route('admin.documentos.index', )
+            ]);
+        }
     }
 }

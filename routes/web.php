@@ -11,10 +11,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth', 'verified', VerifyUserTenant::class])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware(['auth'])->group(function () {
+
+    Route::middleware(['verified', VerifyUserTenant::class])->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('categorias', CategoryController::class)
@@ -33,18 +36,23 @@ Route::middleware(['auth', 'verified', VerifyUserTenant::class])->group(function
 
         Route::resource('documentos', PostController::class)
             ->only(
-                ['index', 'create', 'store', 'edit', 'update', 'destroy']
+                ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']
             )->names(
                 [
                     'index' => 'documentos.index',
-                    'store' => 'documentos.store',
                     'create' => 'documentos.create',
+                    'store' => 'documentos.store',
+                    'show' => 'documentos.show',
                     'edit' => 'documentos.edit',
                     'update' => 'documentos.update',
                     'destroy' => 'documentos.destroy',
                 ]
             );
     });
+
+
+
+    Route::get('documentos', [PostController::class, 'showAll'])->name('');
 });
 
 

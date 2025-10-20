@@ -1,5 +1,7 @@
 
 <x-app-layout>
+    @include('layouts.navigation-admin')
+
     <x-slot name="header" class="relative"> </x-slot>
 
     <div class="w-2/3 mx-auto">
@@ -19,14 +21,16 @@
                 action="{{ $action }}"
                 method="POST"
                 class="p-6 space-y-6">
+
                 @csrf
-                @method($method)
+                @method($method ?: 'POST')
 
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-2">Título</label>
                     <input
                         type="text"
                         name="title"
+                        id="title"
                         placeholder="Ex: Instalação do Sistema"
                         class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value="{{ old('title', $contentPost->title ?? '') ?: $post->title ?? '' }}">
@@ -56,6 +60,28 @@
                     </p>
                 </div>
 
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">
+                        Slug <span class="text-[12px]">unico*</span>
+                    </label>
+                    
+                    <input
+                        type="text"
+                        placeholder="Ex: instalacao-do-sistema"
+                        id="slug"
+                        name="slug"
+                        class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value="{{ old('slug', $contentPost->slug ?? '') ?: $post->slug ?? '' }}">
+
+                    <x-input-error
+                        :messages="$errors->get('slug')"
+                        class="mt-2" />
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        {{ __('') }}
+                    </p>
+                </div>
+
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-2">Categoria</label>
                     <select
@@ -68,7 +94,7 @@
                                 @if(isset($post) && $post->category_id ?: '' ==  $category->id || old('category_id', $contentPost->category_id ?? '')  ==  $category->id)
                                     selected
                                 @endif
-                                > 
+                                >
                                 {{ $category->name }} 
                             </option>
                         @endforeach
@@ -127,4 +153,28 @@
             </form>
         </div>
     </div>
+
+
+    <script>
+        const titleInput = document.getElementById('title');
+        const slugInput = document.getElementById('slug');
+
+        // Função para converter título em slug
+        function gerarSlug(texto) {
+            return texto
+            .toLowerCase() // tudo minúsculo
+            .normalize('NFD') // separa acentos das letras
+            .replace(/[\u0300-\u036f]/g, '') // remove acentos
+            .replace(/[^a-z0-9\s-]/g, '') // remove caracteres especiais
+            .trim() // remove espaços extras nas pontas
+            .replace(/\s+/g, '-') // troca espaços por hífens
+            .replace(/-+/g, '-'); // evita hífens duplos
+        }
+
+        // Observa mudanças no título
+        titleInput.addEventListener('input', () => {
+            const slug = gerarSlug(titleInput.value);
+            slugInput.value = slug;
+        });
+    </script>
 </x-app-layout>
