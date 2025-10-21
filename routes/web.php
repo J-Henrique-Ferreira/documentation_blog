@@ -52,7 +52,10 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    Route::get('documentos', [PostController::class, 'showAll'])->name('');
+    Route::get('documentos', [PostController::class, 'showAll'])->name('documentos.showall');
+    Route::get('documentos/{slug}', [PostController::class, 'show'])->name('documentos.show');
+
+    Route::get('documentosbycategory/{category_id}', [PostController::class, 'getByCategory'])->name('documentos.getByCategory');
 });
 
 

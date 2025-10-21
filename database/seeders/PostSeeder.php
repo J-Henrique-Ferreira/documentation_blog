@@ -13,15 +13,47 @@ class PostSeeder extends Seeder
     public function run(): void
     {
         $postsList = [
-            ['title' => 'Post 1', 'description' => 'Description 1', 'content' => 'Content 1', 'author_id' => 1, 'category_id' => 1, 'tenant_id' => 1],
-            ['title' => 'Post 2', 'description' => 'Description 2', 'content' => 'Content 2', 'author_id' => 1, 'category_id' => 1, 'tenant_id' => 1],
-            ['title' => 'Post 3', 'description' => 'Description 3', 'content' => 'Content 3', 'author_id' => 1, 'category_id' => 1, 'tenant_id' => 1],
+            [
+                'title' => 'Post 1',
+                'description' => 'Description 1',
+                'content' => 'Content 1',
+                'author_id' => 1,
+                'category_id' => 1,
+                'tenant_id' => 1,
+                'slug' => 'post-1'
+            ],
+            [
+                'title' => 'Post 2',
+                'description' => 'Description 2',
+                'content' => 'Content 2',
+                'author_id' => 1,
+                'category_id' => 1,
+                'tenant_id' => 1,
+                'slug' => 'post-2'
+            ],
+            [
+                'title' => 'Post 3',
+                'description' => 'Description 3',
+                'content' => 'Content 3',
+                'author_id' => 1,
+                'category_id' => 1,
+                'tenant_id' => 1,
+                'slug' => 'post-3'
+            ],
         ];
 
-        foreach ($postsList as $key => $post) {
+        for ($i = 0; $i < 50; $i++) {
             Post::updateOrCreate(
-                ['id' => $key + 1],
-                $post
+                ['id' => $i + 1],
+                [
+                    'title' => 'Post ' . $i + 1,
+                    'description' => 'Description ' . $i + 1,
+                    'content' => 'Content ' . $i + 1,
+                    'author_id' => 1,
+                    'category_id' => 1,
+                    'tenant_id' => 1,
+                    'slug' => 'post-' . $i + 1
+                ],
             );
         }
     }

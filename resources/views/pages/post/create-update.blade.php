@@ -1,4 +1,3 @@
-
 <x-app-layout>
     @include('layouts.navigation-admin')
 
@@ -11,33 +10,24 @@
                     @if($method == "POST")
                         Novo documento
                     @else
-                        Editar documento  -  {{ $post->name }}
+                        Editar documento - {{ $post->title }}
                     @endif
                 </h1>
                 <!--  <p class="text-slate-600 mt-1">Crie uma nova categoria para sua documentação</p> -->
             </div>
 
-            <form
-                action="{{ $action }}"
-                method="POST"
-                class="p-6 space-y-6">
+            <form action="{{ $action }}" method="POST" class="p-6 space-y-6">
 
                 @csrf
                 @method($method ?: 'POST')
 
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-2">Título</label>
-                    <input
-                        type="text"
-                        name="title"
-                        id="title"
-                        placeholder="Ex: Instalação do Sistema"
+                    <input type="text" name="title" id="title" placeholder="Ex: Instalação do Sistema"
                         class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value="{{ old('title', $contentPost->title ?? '') ?: $post->title ?? '' }}">
 
-                    <x-input-error
-                        :messages="$errors->get('title')"
-                        class="mt-2" />
+                    <x-input-error :messages="$errors->get('title')" class="mt-2" />
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                         {{ __('') }}
                     </p>
@@ -45,16 +35,11 @@
 
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-2">Descrição curta</label>
-                    <input
-                        type="text"
-                        placeholder="Breve descrição do documento"
-                        name="description"
+                    <input type="text" placeholder="Breve descrição do documento" name="description"
                         class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value="{{ old('description', $contentPost->description ?? '') ?: $post->description ?? '' }}">
 
-                    <x-input-error
-                        :messages="$errors->get('description')"
-                        class="mt-2" />
+                    <x-input-error :messages="$errors->get('description')" class="mt-2" />
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                         {{ __('') }}
                     </p>
@@ -65,18 +50,12 @@
                     <label class="block text-sm font-medium text-slate-700 mb-2">
                         Slug <span class="text-[12px]">unico*</span>
                     </label>
-                    
-                    <input
-                        type="text"
-                        placeholder="Ex: instalacao-do-sistema"
-                        id="slug"
-                        name="slug"
+
+                    <input type="text" placeholder="Ex: instalacao-do-sistema" id="slug" name="slug"
                         class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value="{{ old('slug', $contentPost->slug ?? '') ?: $post->slug ?? '' }}">
 
-                    <x-input-error
-                        :messages="$errors->get('slug')"
-                        class="mt-2" />
+                    <x-input-error :messages="$errors->get('slug')" class="mt-2" />
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                         {{ __('') }}
                     </p>
@@ -84,18 +63,12 @@
 
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-2">Categoria</label>
-                    <select
-                        name="category_id"
+                    <select name="category_id"
                         class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option>Selecione uma categoria</option>
                         @foreach ($categoriesList as $category)
-                            <option 
-                                value="{{ $category->id }}"                                
-                                @if(isset($post) && $post->category_id ?: '' ==  $category->id || old('category_id', $contentPost->category_id ?? '')  ==  $category->id)
-                                    selected
-                                @endif
-                                >
-                                {{ $category->name }} 
+                            <option value="{{ $category->id }}" @if(isset($post) && $post->category_id ?: '' == $category->id || old('category_id', $contentPost->category_id ?? '') == $category->id) selected @endif>
+                                {{ $category->name }}
                             </option>
                         @endforeach
                     </select>
@@ -103,14 +76,10 @@
 
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-2">Conteúdo</label>
-                    <textarea
-                        rows="10"
-                        name="content"
+                    <textarea rows="10" name="content"
                         placeholder="Escreva o conteúdo da documentação aqui... (suporta Markdown)"
                         class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm">{{ old('content', $contentPost->content ?? '') ?: $post->content ?? '' }}</textarea>
-                    <x-input-error
-                        :messages="$errors->get('content')"
-                        class="mt-2" />
+                    <x-input-error :messages="$errors->get('content')" class="mt-2" />
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                         {{ __('') }}
                     </p>
@@ -141,8 +110,7 @@
                 </div>
 
                 <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-                    <button
-                        class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
+                    <button class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
                         Cancelar
                     </button>
                     <button type="submit"
@@ -162,13 +130,13 @@
         // Função para converter título em slug
         function gerarSlug(texto) {
             return texto
-            .toLowerCase() // tudo minúsculo
-            .normalize('NFD') // separa acentos das letras
-            .replace(/[\u0300-\u036f]/g, '') // remove acentos
-            .replace(/[^a-z0-9\s-]/g, '') // remove caracteres especiais
-            .trim() // remove espaços extras nas pontas
-            .replace(/\s+/g, '-') // troca espaços por hífens
-            .replace(/-+/g, '-'); // evita hífens duplos
+                .toLowerCase() // tudo minúsculo
+                .normalize('NFD') // separa acentos das letras
+                .replace(/[\u0300-\u036f]/g, '') // remove acentos
+                .replace(/[^a-z0-9\s-]/g, '') // remove caracteres especiais
+                .trim() // remove espaços extras nas pontas
+                .replace(/\s+/g, '-') // troca espaços por hífens
+                .replace(/-+/g, '-'); // evita hífens duplos
         }
 
         // Observa mudanças no título

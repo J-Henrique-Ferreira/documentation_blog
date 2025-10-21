@@ -12,34 +12,49 @@
             }
         }">
     <nav class="p-4">
-        <div class="mb-2">
-            <button @click="toggleCategory('getting-started')"
-                class="w-full flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg text-left font-medium">
-                <span class="flex items-center gap-2">
-                    <i class="fa fa-rocket text-blue-600 text-sm"></i>
-                    Primeiros Passos
-                </span>
-                <i class="fa fa-chevron-down text-xs transition-transform"
-                    :class="openCategories.includes('getting-started') ? 'rotate-180' : ''"></i>
-            </button>
 
-            <div x-show="openCategories.includes('getting-started')" x-collapse class="ml-4 mt-1 space-y-1">
-                <a href="#"
-                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
-                    Introdução
-                </a>
-                <a href="#"
-                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg bg-blue-50 text-blue-600 border-l-2 border-blue-600">
-                    Instalação
-                </a>
-                <a href="#"
-                    class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600">
-                    Configuração Inicial
-                </a>
-            </div>
+       <div x-data="postsAccordion()">
+            @foreach ($categoriesList as $key => $category)
+                <div class="mb-2">
+                    <button
+                        @click="loadCategory('{{ $category->id }}', '{{ $category->name }}')"
+                        class="w-full flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg text-left font-medium"
+                    >
+                        <span class="flex items-center gap-2">
+                            <i class="fa fa-rocket text-blue-600 text-sm"></i>
+                            {{ $category->name }}
+                        </span>
+                        <i class="fa fa-chevron-down text-xs transition-transform"
+                        :class="openCategories.includes('{{ $category->name }}') ? 'rotate-180' : ''"></i>
+                    </button>
+
+                    <div
+                        x-show="openCategories.includes('{{ $category->name }}')"
+                        x-collapse
+                        class="ml-4 mt-1 space-y-1"
+                    >
+                        <template x-for="post in categories['{{ $category->id }}']" :key="post.slug">
+                            <a
+                                :href="'/documentos/' + post.slug"
+                                class="block p-2 pl-6 text-sm hover:bg-slate-50 rounded-lg text-slate-700 hover:text-blue-600"
+                                x-text="post.title"
+                            ></a>
+                        </template>
+
+                        <!-- Loader -->
+                        <template x-if="loadingCategory === '{{ $category->id }}'">
+                            <p class="text-sm text-slate-500 pl-6">Carregando...</p>
+                        </template>
+                    </div>
+
+                    <form action="{{ route('documentos.getByCategory', $category->id) }}" method="GET" class="hidden" id="form-{{ $category->id }}">
+                        @csrf
+                    </form>
+                </div>
+            @endforeach
         </div>
 
-        <div class="mb-2">
+        <!-- <div class="mb-2">
             <button @click="toggleCategory('config')"
                 class="w-full flex items-center justify-between p-2 hover:bg-slate-50 rounded-lg text-left font-medium">
                 <span class="flex items-center gap-2">
@@ -134,6 +149,51 @@
                     Performance
                 </a>
             </div>
-        </div>
+        </div> -->
     </nav>
 </aside>
+
+<script>
+    function postsAccordion() {
+        return {
+            openCategories: [],
+            categories: {}, // Armazena os posts por categoria
+            loadingCategory: null,
+
+            toggleCategory(name) {
+                if (this.openCategories.includes(name)) {
+                    this.openCategories = this.openCategories.filter(c => c !== name);
+                } else {
+                    this.openCategories.push(name); 
+                }
+            },
+
+            async loadCategory(categoryId, categoryName) {
+                // Abre ou fecha o accordion
+                this.toggleCategory(categoryName);
+
+                // Evita recarregar se já carregado
+                if (this.categories[categoryId]) return;
+
+                this.loadingCategory = categoryId;
+
+                try {
+                    const response = await fetch(`{{ url('documentosbycategory') }}/${categoryId}`, {
+                        headers: { 'Accept': 'application/json' },
+                    });
+
+                    if (!response.ok) throw new Error('Erro ao carregar os posts.');
+
+                    const data = await response.json();
+                    this.categories[categoryId] = data.posts ?? [];
+
+                } catch (error) {
+                    console.error(error);
+                    this.categories[categoryId] = [];
+                } finally {
+                    this.loadingCategory = null;
+                }
+            }
+        }
+    }
+</script>

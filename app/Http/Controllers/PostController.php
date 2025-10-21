@@ -80,6 +80,13 @@ class PostController extends Controller
         }
     }
 
+    public function getByCategory(string $category_id)
+    {
+        $postsList = Post::where('category_id', $category_id)->get();
+
+        return json_decode($postsList, true);
+    }
+
     /**
      * Display the specified resource.
      */
