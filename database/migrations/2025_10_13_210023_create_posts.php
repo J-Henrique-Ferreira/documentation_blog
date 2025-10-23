@@ -15,13 +15,15 @@ return new class extends Migration {
             $table->string('title');
             $table->string('description');
             $table->text('content');
-            $table->string('slug')->unique(true)->nullable(false);
+            $table->string('slug')->nullable(false);
             $table->string('status')->default('publish'); // publish ou draft
             $table->unsignedBigInteger('tenant_id')->nullable(false);
             $table->unsignedBigInteger('author_id')->nullable(false);
             $table->unsignedBigInteger('category_id')->nullable(false);
-
             $table->timestamps();
+
+            $table->unique(['slug', 'tenant_id'], 'users_email_tenant_unique');
+
 
             $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('cascade');
             $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');

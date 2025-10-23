@@ -8,6 +8,11 @@ use App\Traits\ReturnErrors;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
+use League\CommonMark\MarkdownConverter;
+
 
 class PostController extends Controller
 {
@@ -21,8 +26,7 @@ class PostController extends Controller
         try {
             $tenantId = auth()->user()->tenant_id;
             $categoriesList = Category::where('tenant_id', $tenantId)->get();
-            $postsList = Post::where('tenant_id', $tenantId)->with('category', 'author')->paginate(12);
-            // dd($postsList);
+            $postsList = Post::where('tenant_id', $tenantId)->with('category', 'author')->orderBy('updated_at', 'desc')->paginate(12);
 
             return view(
                 'pages.post.index',
@@ -80,18 +84,62 @@ class PostController extends Controller
         }
     }
 
-    public function getByCategory(string $category_id)
-    {
-        $postsList = Post::where('category_id', $category_id)->get();
-
-        return json_decode($postsList, true);
-    }
-
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Request $request)
     {
+        $tenantId = auth()->user()->tenant_id;
+        $categoriesList = Category::where('tenant_id', $tenantId)->get();
+        $post = Post::where('slug', $request->slug)->where('tenant_id', $tenantId)->get();
+
+        if (count($post->all()) <= 0)
+            abort(404);
+
+        $post = $post->all()[0];
+
+        if ($post->tenant_id != auth()->user()->tenant_id) {
+            abort(404);
+        }
+
+        $environment = new Environment([
+            'html_input' => 'allow',
+            'allow_unsafe_links' => false,
+        ]);
+
+        $environment->addExtension(new CommonMarkCoreExtension());
+        $environment->addExtension(new GithubFlavoredMarkdownExtension());
+
+        $converter = new MarkdownConverter($environment);
+        $htmlContent = $converter->convert($post->content)->getContent();
+
+        $post->content = $htmlContent;
+
+        // dd($post->title);
+
+        $routesLinksList = null;
+
+        foreach ($categoriesList as $category) {
+            $data = [
+                'name' => $category->name,
+                'href' => route('documentos.showallByCategory', $category->id),
+                'icon' => $category->icon,
+                'id' => $category->id
+            ];
+
+            $routesLinksList[] = $data;
+        }
+
+
+
+        return view(
+            'pages.post.show-unique',
+            compact(
+                'post',
+                'routesLinksList',
+                'categoriesList'
+            )
+        );
 
     }
 
@@ -99,12 +147,36 @@ class PostController extends Controller
     {
         $tenantId = auth()->user()->tenant_id;
         $categoriesList = Category::where('tenant_id', $tenantId)->get();
-        $postsList = Post::where('tenant_id', $tenantId)->with('category', 'author')->paginate(12);
+        $postsList = [];
+        $routesLinksList = null;
 
-        return view('pages.post.show-all', [
-            'categoriesList' => $categoriesList,
-            'postsList' => $postsList
-        ]);
+        foreach ($categoriesList as $category) {
+            $data = [
+                'name' => $category->name,
+                'href' => route('documentos.showallByCategory', $category->id),
+                'icon' => $category->icon,
+                'id' => $category->id
+            ];
+
+            $routesLinksList[] = $data;
+        }
+
+
+        if ($request->category_id) {
+            $postsList = Post::where(
+                'tenant_id',
+                $tenantId
+            )->where('category_id', $request->category_id)->where('status', 'publish')->with('category', 'author')->paginate(12);
+        }
+
+        return view(
+            'pages.post.show-all',
+            compact(
+                'categoriesList',
+                'postsList',
+                'routesLinksList'
+            )
+        );
     }
 
     /**

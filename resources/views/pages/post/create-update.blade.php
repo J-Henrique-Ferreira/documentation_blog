@@ -1,7 +1,9 @@
 <x-app-layout>
     @include('layouts.navigation-admin')
 
-    <x-slot name="header" class="relative"> </x-slot>
+    <x-slot name="header" class="relative">
+        @include('partials.header')
+    </x-slot>
 
     <div class="w-2/3 mx-auto">
         <div class="p-6 lg:p-8">
@@ -66,8 +68,17 @@
                     <select name="category_id"
                         class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option>Selecione uma categoria</option>
+                        
                         @foreach ($categoriesList as $category)
-                            <option value="{{ $category->id }}" @if(isset($post) && $post->category_id ?: '' == $category->id || old('category_id', $contentPost->category_id ?? '') == $category->id) selected @endif>
+                            <option value="{{ $category->id }}" 
+                                @if( old('category_id', $contentPost->category_id ?? '') == $category->id)
+                                    selected 
+                                @elseif(isset($post->category_id))
+                                    @if($post->category_id == $category->id)
+                                        selected
+                                    @endif
+                                @endif
+                            >
                                 {{ $category->name }}
                             </option>
                         @endforeach
@@ -76,7 +87,7 @@
 
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-2">Conteúdo</label>
-                    <textarea rows="10" name="content"
+                    <textarea rows="10" name="content" id="markdown-editor"
                         placeholder="Escreva o conteúdo da documentação aqui... (suporta Markdown)"
                         class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm">{{ old('content', $contentPost->content ?? '') ?: $post->content ?? '' }}</textarea>
                     <x-input-error :messages="$errors->get('content')" class="mt-2" />
@@ -143,6 +154,23 @@
         titleInput.addEventListener('input', () => {
             const slug = gerarSlug(titleInput.value);
             slugInput.value = slug;
+        });
+    </script>
+
+    <!-- EasyMDE via CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+
+    <script>
+        const easyMDE = new EasyMDE({
+            element: document.getElementById('markdown-editor'),
+            spellChecker: false,
+            autosave: {
+                enabled: true,
+                uniqueId: "post_markdown_autosave",
+                delay: 1000,
+            },
+            placeholder: "Escreva sua documentação em Markdown..."
         });
     </script>
 </x-app-layout>

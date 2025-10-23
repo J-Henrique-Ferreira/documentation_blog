@@ -16,8 +16,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('pages.categoria.index', ['categories' => $categories]);
+        $tenantId = auth()->user()->tenant_id;
+        $categoriesList = Category::where('tenant_id', $tenantId)->get();
+        return view('pages.categoria.index', compact('categoriesList'));
     }
 
     public function create(Request $request)

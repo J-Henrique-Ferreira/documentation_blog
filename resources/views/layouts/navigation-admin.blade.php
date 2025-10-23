@@ -1,33 +1,39 @@
 <?php
-$linksList = [
-    [
-        'name' => 'Documentos',
-        'href' => route('admin.documentos.index'),
-        'icon' => 'fa  fa-file-text',
-        'route_pattern' => 'admin/documentos', // Captura todos os métodos
-        'can' => null // Adicione a verificação de permissão se necessário
-    ],
-    [
-        'name' => 'Categorias',
-        'href' => route('admin.categorias.index'),
-        'icon' => 'fa fa-folder-o w-4',
-        'route_pattern' => 'admin/categorias' // Captura todos os métodos
-        // 'route_pattern' => '' // Para futuras rotas
-    ],
-    [
-        'name' => 'Usuários',
-        'href' => '#',
-        'icon' => 'fa fa-users w-4',
-        'route_pattern' => '/', // Captura todos os métodos
-        'can' => 'admin_owner'
-    ],
-    [
-        'name' => 'Estatísticas',
-        'href' => '#',
-        'icon' => 'fa fa-bar-chart w-4',
-        'route_pattern' => '/' // Captura todos os métodos
-    ],
-];
+
+if (!isset($routesLinksList)) {
+    $routesLinksList = [
+        [
+            'name' => 'Documentos',
+            'href' => route('admin.documentos.index'),
+            'icon' => 'fa  fa-file-text',
+            'route_pattern' => 'admin/documentos', // Captura todos os métodos
+            'can' => null // Adicione a verificação de permissão se necessário
+        ],
+        [
+            'name' => 'Categorias',
+            'href' => route('admin.categorias.index'),
+            'icon' => 'fa fa-folder-o w-4',
+            'route_pattern' => 'admin/categorias' // Captura todos os métodos
+            // 'route_pattern' => '' // Para futuras rotas
+        ],
+        [
+            'name' => 'Clientes',
+            'href' => route('admin.clientes.index'),
+            'icon' => 'fa fa-users w-4',
+            'route_pattern' => 'admin/clientes', // Captura todos os métodos
+            'can' => 'admin_owner'
+        ],
+        [
+            'name' => 'Estatísticas',
+            'href' => '#',
+            'icon' => 'fa fa-bar-chart w-4',
+            'route_pattern' => '/' // Captura todos os métodos
+        ],
+    ];
+}
+
+
+
 ?>
 
 <div class="flex h-screen border-r border-gray-200 fixed z-10">
@@ -41,9 +47,21 @@ $linksList = [
                 Menu Principal
             </p>
 
-            @foreach ($linksList as $link)
+            @foreach ($routesLinksList as $link)
                 @php
-                    $isActive = request()->is($link['route_pattern'] . '*');
+                    if (isset($link['route_pattern'])) {
+                        $isActive = request()->is($link['route_pattern'] . '*');
+                    }
+                    // verificar se o post atual pertence a categoria para marcar ela como active
+
+                    if (isset($link['id'])) {
+                        $isActive = request()->category_id == $link['id'];
+                    }
+
+                    if (isset($post) && isset($link['id'])) {
+                        $isActive = $post->category_id == $link['id'];
+                    }
+
                 @endphp
 
                 @if(isset($link['can']))

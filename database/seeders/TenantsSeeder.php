@@ -13,7 +13,7 @@ class TenantsSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 0; $i <= 5; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             Tenant::updateOrCreate([
                 'name' => 'Tenant' . $i + 1,
                 'domain' => 'tenant' . $i + 1

@@ -1,7 +1,9 @@
 <x-app-layout>
     @include('layouts.navigation-admin')
 
-    <x-slot name="header" class="relative"></x-slot>
+    <x-slot name="header" class="relative">
+        @include('partials.header')
+    </x-slot>
 
     <div class="w-full">
         <div class="p-6 lg:p-8">
@@ -16,8 +18,11 @@
                 </a>
             </div>
 
+            <br>
+            <br>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach ($categories as $category)
+                @foreach ($categoriesList as $category)
                     @include('pages/categoria/card', ['category' => $category])
                 @endforeach
             </div>
