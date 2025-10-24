@@ -12,7 +12,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $usersList = User::orderBy('tenant_id')->with('tenant')->paginate(12);
+        // dd($usersList);
+
+        return view('pages.user.index', compact('usersList'));
     }
 
     /**

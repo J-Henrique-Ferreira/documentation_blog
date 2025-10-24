@@ -8,15 +8,12 @@ use App\Traits\ReturnErrors;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use League\CommonMark\Environment\Environment;
-use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
-use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
-use League\CommonMark\MarkdownConverter;
-
+use App\Traits\ParseMdToHtml;
 
 class PostController extends Controller
 {
     use ReturnErrors;
+    use ParseMdToHtml;
 
     /**
      * Display a listing of the resource.
@@ -102,21 +99,7 @@ class PostController extends Controller
             abort(404);
         }
 
-        $environment = new Environment([
-            'html_input' => 'allow',
-            'allow_unsafe_links' => false,
-        ]);
-
-        $environment->addExtension(new CommonMarkCoreExtension());
-        $environment->addExtension(new GithubFlavoredMarkdownExtension());
-
-        $converter = new MarkdownConverter($environment);
-        $htmlContent = $converter->convert($post->content)->getContent();
-
-        $post->content = $htmlContent;
-
-        // dd($post->title);
-
+        $post->content = $this->parseMdToHtml($post->content);
         $routesLinksList = null;
 
         foreach ($categoriesList as $category) {
@@ -129,8 +112,6 @@ class PostController extends Controller
 
             $routesLinksList[] = $data;
         }
-
-
 
         return view(
             'pages.post.show-unique',

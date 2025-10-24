@@ -24,10 +24,10 @@ if (!isset($routesLinksList)) {
             'can' => 'admin_owner'
         ],
         [
-            'name' => 'Estatísticas',
-            'href' => '#',
-            'icon' => 'fa fa-bar-chart w-4',
-            'route_pattern' => '/' // Captura todos os métodos
+            'name' => 'Usuários',
+            'href' => route('admin.usuarios.index'),
+            'icon' => 'fa fa-user-plus w-4',
+            'route_pattern' => 'admin/usuarios' // Captura todos os métodos
         ],
     ];
 }

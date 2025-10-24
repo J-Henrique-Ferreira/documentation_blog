@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TenantController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ValidaMultiTenant;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\VerifyUserTenant;
@@ -13,7 +14,6 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-
     Route::middleware(['verified', VerifyUserTenant::class])->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -63,6 +63,21 @@ Route::middleware(['auth'])->group(function () {
                         'edit' => 'clientes.edit',
                         'update' => 'clientes.update',
                         'destroy' => 'clientes.destroy',
+                    ]
+                );
+
+            Route::resource('usuarios', UserController::class)
+                ->only(
+                    ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']
+                )->names(
+                    [
+                        'index' => 'usuarios.index',
+                        'create' => 'usuarios.create',
+                        'store' => 'usuarios.store',
+                        'show' => 'usuarios.show',
+                        'edit' => 'usuarios.edit',
+                        'update' => 'usuarios.update',
+                        'destroy' => 'usuarios.destroy',
                     ]
                 );
         });

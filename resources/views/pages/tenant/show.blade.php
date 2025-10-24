@@ -14,7 +14,7 @@
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h1 class="text-3xl font-bold text-slate-900">
-                        aaaa {{ $tenant->name}}
+                        {{ $tenant->name}}
                     </h1>
                 </div>
             </div>

@@ -29,7 +29,7 @@
                         class="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value="{{ old('name', $contentPost->name ?? '') ?: $tenant->name ?? '' }}">
 
-                    <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                         {{ __('') }}
                     </p>
@@ -72,11 +72,6 @@
         const easyMDE = new EasyMDE({
             element: document.getElementById('markdown-editor'),
             spellChecker: false,
-            autosave: {
-                enabled: true,
-                uniqueId: "post_markdown_autosave",
-                delay: 1000,
-            },
             placeholder: "Escreva sua documentação em Markdown..."
         });
     </script>

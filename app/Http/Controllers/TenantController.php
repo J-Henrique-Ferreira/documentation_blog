@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTenantRequest;
+use App\Http\Requests\UpdateTenantRequest;
 use App\Models\Category;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
 use App\Traits\ReturnErrors;
-
+use App\Traits\ParseMdToHtml;
 
 class TenantController extends Controller
 {
     use ReturnErrors;
+    use ParseMdToHtml;
 
     /**
      * Display a listing of the resource.
@@ -41,7 +44,7 @@ class TenantController extends Controller
             'pages.tenant.create-update',
             [
                 'method' => 'POST',
-                'action' => route('admin.cliente.store'),
+                'action' => route('admin.clientes.store'),
             ]
         );
     }
@@ -49,7 +52,7 @@ class TenantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTenantRequest $request)
     {
         // dd($request->all());
         try {
@@ -60,7 +63,7 @@ class TenantController extends Controller
         } catch (\Throwable $th) {
             return $this->returnErrors($th, [
                 'message' => 'Erro ao criar documento.',
-                'route' => route('admin.documentos.index')
+                'route' => route('admin.clientes.index')
             ]);
         }
     }
@@ -71,6 +74,7 @@ class TenantController extends Controller
     public function show(Request $request)
     {
         $tenant = Tenant::findOrFail($request->cliente);
+        $tenant->content = $this->parseMdToHtml($tenant->content);
         // dd($tenant);
 
         return view('pages.tenant.show', compact('tenant'));
@@ -92,7 +96,7 @@ class TenantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tenant $tenant)
+    public function update(UpdateTenantRequest $request, Tenant $tenant)
     {
         try {
             $tenant = Tenant::findOrFail($request->cliente);

@@ -165,11 +165,6 @@
         const easyMDE = new EasyMDE({
             element: document.getElementById('markdown-editor'),
             spellChecker: false,
-            autosave: {
-                enabled: true,
-                uniqueId: "post_markdown_autosave",
-                delay: 1000,
-            },
             placeholder: "Escreva sua documentação em Markdown..."
         });
     </script>
