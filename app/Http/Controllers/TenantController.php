@@ -96,8 +96,9 @@ class TenantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTenantRequest $request, Tenant $tenant)
+    public function update(UpdateTenantRequest $request)
     {
+        // dd('entrou no metodo');
         try {
             $tenant = Tenant::findOrFail($request->cliente);
             $tenant->fill($request->all());

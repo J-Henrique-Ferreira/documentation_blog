@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules;
 
-class UpdateTenantRequest extends FormRequest
+
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +25,10 @@ class UpdateTenantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:3|max:255',
-            'content' => 'min:3'
-            // 'cliente' => 'required|exists:tenant,id' // id passado como parametro na rota de action do form
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'tenant_id' => 'required|exists:categories,id'
         ];
     }
 }

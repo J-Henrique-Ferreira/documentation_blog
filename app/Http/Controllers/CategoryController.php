@@ -27,7 +27,7 @@ class CategoryController extends Controller
             'pages.categoria.create-update',
             [
                 'method' => 'POST',
-                'route' => route('admin.categorias.store')
+                'action' => route('admin.categorias.store')
             ]
         );
     }
@@ -48,7 +48,7 @@ class CategoryController extends Controller
                 $th,
                 [
                     'message' => 'Erro ao criar categoria!',
-                    'route' => route('admin.categorias.index')
+                    'action' => route('admin.categorias.index')
                 ]
             );
         }
@@ -62,7 +62,7 @@ class CategoryController extends Controller
             'pages.categoria.create-update',
             [
                 'method' => 'PUT',
-                'route' => route('admin.categorias.update', $category->id),
+                'action' => route('admin.categorias.update', $category->id),
                 'category' => $category
             ]
         );

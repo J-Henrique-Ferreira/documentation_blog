@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateTenantRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,14 @@ class UpdateTenantRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3|max:255',
-            'content' => 'min:3'
-            // 'cliente' => 'required|exists:tenant,id' // id passado como parametro na rota de action do form
+            'email' => [
+                'required',
+                'min:3',
+                'max:25',
+                Rule::unique('users', column: 'email')->ignore($this->categoria),
+            ],
+
+            'tenant_id' => 'required|exists:categories,id'
         ];
     }
 }

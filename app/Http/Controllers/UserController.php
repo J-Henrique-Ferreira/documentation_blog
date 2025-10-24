@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\StoreUserRequest;
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -23,23 +26,38 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $tenantsList = Tenant::all();
+
+        return view('pages.user.create-update', [
+            'method' => 'POST',
+            'action' => route('admin.usuarios.store'),
+            'tenantsList' => $tenantsList
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'tenant_id' => $request->tenant_id
+        ]);
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Request $request)
     {
-        //
+        $user = User::with('tenant')->find($request->usuario);
+        // dd($user);
+
+        return view('pages.user.show', compact('user'));
     }
 
     /**
